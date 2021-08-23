@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13.1
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    ports:
+      - 5432:5432
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - '2181:2181'
+
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - '9092:9092'
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+  inventory-command-service:
+    build: './inventory-command-service'
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+      - kafka
+
+  inventory-query-service:
+    build: './inventory-query-service'
+    ports:
+      - 3001:3000
+    depends_on:
+      - db
+      - kafka
+
+volumes:
+  db-data: {}

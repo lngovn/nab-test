@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+export PGPASSWORD=$POSTGRES_PASSWORD;
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+  CREATE USER user1 WITH PASSWORD 'password';
+  CREATE DATABASE example;
+  GRANT ALL PRIVILEGES ON DATABASE example TO user1;
+
+  CREATE USER user2 WITH PASSWORD 'password';
+  CREATE DATABASE example1;
+  GRANT ALL PRIVILEGES ON DATABASE example1 TO user2;
+EOSQL
