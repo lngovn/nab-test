@@ -1,6 +1,7 @@
-import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { CreateProductDto, TransformInterceptor } from 'nab-test-common';
+import { CreateProductDto, IncomingMessage } from 'nab-test-common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller({
   version: '1',
@@ -9,9 +10,9 @@ import { CreateProductDto, TransformInterceptor } from 'nab-test-common';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @Post()
-  @UseInterceptors(TransformInterceptor)
-  async create(@Body() createProductDto: CreateProductDto) {
+  // @Post()
+  @MessagePattern('create.product')
+  create(@Payload('value') createProductDto: CreateProductDto) {
     return this.productService.createProduct(createProductDto);
   }
 }

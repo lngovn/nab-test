@@ -9,17 +9,10 @@ export class ProductService {
 
   async getProduct(id: number) {
     const product = await this.productRepository.findOne(id);
-    if (!product) {
-      throw new NotFoundException(`Cannot find product with id [${id}]`);
-    }
-    return product;
+    return { ...product };
   }
 
   async getProducts(productListDto: ProductListDto) {
     return this.productRepository.getProducts(productListDto);
-  }
-
-  async createProduct(product: ProductCreatedEventDto) {
-    return this.productRepository.save({ ...product });
   }
 }

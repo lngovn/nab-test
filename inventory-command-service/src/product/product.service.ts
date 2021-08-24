@@ -4,7 +4,6 @@ import { CreateProductDto } from 'nab-test-common';
 import { Repository } from 'typeorm';
 import { Branch } from './entities/branch.entity';
 import { Product } from './entities/product.entity';
-import { ProductResource } from './product.resource';
 @Injectable()
 export class ProductService {
   constructor(
@@ -12,7 +11,6 @@ export class ProductService {
     private productRepository: Repository<Product>,
     @InjectRepository(Branch)
     private branchRepository: Repository<Branch>,
-    private productResource: ProductResource,
   ) {}
 
   async createProduct(createProductDto: CreateProductDto) {
@@ -29,11 +27,6 @@ export class ProductService {
     const product = await this.productRepository.save({
       ...createProductDto,
       branch,
-    });
-
-    this.productResource.emitCreatedEvent({
-      id: product.id,
-      ...createProductDto,
     });
     return product;
   }

@@ -4,48 +4,33 @@ import { CreateProductDto } from 'nab-test-common';
 import { Product } from '../entities/product.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Branch } from '../entities/branch.entity';
-import { ProductResource } from '../product.resource';
 import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
-
-class MockProductResource {
-  emitCreatedEvent = jest.fn();
-}
 
 describe('ProductService', () => {
   let app: TestingModule;
   let productService: ProductService;
   let productRepository: Repository<Product>;
   let branchRepository: Repository<Branch>;
-  let productResource: ProductResource;
 
   beforeAll(async () => {
     const ProductRepositoryProvider = {
       provide: getRepositoryToken(Product),
       useFactory: jest.fn(() => ({
-        save: () => {
-          console.log('Mockkkkkkkk getRepositoryToken(Product) save');
-        },
+        save: jest.fn(),
       })),
     };
     const BranchRepositoryProvider = {
       provide: getRepositoryToken(Branch),
       useFactory: jest.fn(() => ({
-        findOne: () => {
-          console.log('Mockkkkkkkk getRepositoryToken(Branch) findOne');
-        },
+        findOne: jest.fn(),
       })),
-    };
-    const ProductResourceProvider = {
-      provide: ProductResource,
-      useClass: MockProductResource,
     };
     app = await Test.createTestingModule({
       providers: [
         ProductService,
         ProductRepositoryProvider,
         BranchRepositoryProvider,
-        ProductResourceProvider,
       ],
     }).compile();
     productService = app.get<ProductService>(ProductService);
@@ -53,7 +38,6 @@ describe('ProductService', () => {
       getRepositoryToken(Product),
     );
     branchRepository = app.get<Repository<Branch>>(getRepositoryToken(Branch));
-    productResource = app.get<ProductResource>(ProductResource);
   });
 
   describe('createProduct', () => {
@@ -75,7 +59,7 @@ describe('ProductService', () => {
       }
     });
 
-    it('should emit a created product event to message broker', async () => {
+    it('should return product on create success', async () => {
       const createProductDto: CreateProductDto = {
         name: 'Macbook Pro',
         color: 'Silver',
@@ -95,13 +79,9 @@ describe('ProductService', () => {
       jest
         .spyOn(productRepository, 'save')
         .mockReturnValue(Promise.resolve(createdProduct));
-      const spy = jest.spyOn(productResource, 'emitCreatedEvent');
 
-      await productService.createProduct(createProductDto);
-      expect(spy).toBeCalledWith({
-        id: 1,
-        ...createProductDto,
-      });
+      const product = await productService.createProduct(createProductDto);
+      expect(product).toStrictEqual(createdProduct);
     });
   });
 });
