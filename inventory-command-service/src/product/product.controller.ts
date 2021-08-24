@@ -1,5 +1,5 @@
 import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
-import { ProductService } from 'src/product/product.service';
+import { ProductService } from './product.service';
 import { CreateProductDto, TransformInterceptor } from 'nab-test-common';
 
 @Controller({

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Client, ClientKafka } from '@nestjs/microservices';
 import { ProductCreatedEventDto } from 'nab-test-common';
-import { microserviceConfig } from 'src/microservice-config';
+import { microserviceConfig } from '../microservice-config';
 import { KAFKA_TOPIC } from './const';
 
 @Injectable()

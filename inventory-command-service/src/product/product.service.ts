@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { Branch } from './entities/branch.entity';
 import { Product } from './entities/product.entity';
 import { ProductResource } from './product.resource';
-
 @Injectable()
 export class ProductService {
   constructor(
