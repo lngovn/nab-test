@@ -31,22 +31,9 @@ export class init1629947655939 implements MigrationInterface {
     await queryRunner.query(`CREATE VIEW "product_view" AS 
     SELECT p.*, it.price, it.quantity, it.branch_id FROM product p 
     LEFT OUTER JOIN item it ON p.id = it.product_id;`);
-    await queryRunner.query(
-      `INSERT INTO "typeorm_metadata"("type", "schema", "name", "value") VALUES ($1, $2, $3, $4)`,
-      [
-        'VIEW',
-        'public',
-        'product_view',
-        'SELECT p.*, it.price, it.quantity, it.branch_id FROM product p \n  LEFT OUTER JOIN item it ON p.id = it.product_id;',
-      ],
-    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `DELETE FROM "typeorm_metadata" WHERE "type" = $1 AND "schema" = $2 AND "name" = $3`,
-      ['VIEW', 'public', 'product_view'],
-    );
     await queryRunner.query(`DROP VIEW "product_view"`);
     await queryRunner.query(`DROP TABLE "user_activity_log"`);
     await queryRunner.query(

@@ -9,6 +9,9 @@
 
 
 ## Highlevel architecture
+
+![image](high-level-achitecture.png)
+
 ## Workflow
 ## Database
 ## Design Pattern
