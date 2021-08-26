@@ -1,8 +1,11 @@
-import { Entity, Column, Index, PrimaryColumn } from 'typeorm';
+import { Column, PrimaryColumn, ViewEntity } from 'typeorm';
 
-@Entity()
-@Index(['branchId', 'name', 'color'])
-export class Product {
+@ViewEntity({
+  expression: `
+  SELECT p.*, it.price, it.quantity, it.branch_id FROM product p 
+  LEFT OUTER JOIN item it ON p.id = it.product_id;`,
+})
+export class ProductView {
   @PrimaryColumn()
   id: number;
 
@@ -17,6 +20,9 @@ export class Product {
 
   @Column({ type: 'float' })
   price: number;
+
+  @Column({ type: 'float' })
+  quantity: number;
 
   @Column()
   branchId: number;

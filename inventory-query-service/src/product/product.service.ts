@@ -1,5 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { ProductCreatedEventDto } from 'nab-test-common';
+import { Injectable } from '@nestjs/common';
 import { ProductListDto } from './dto/product.list-dto';
 import { ProductRepository } from './product.repository';
 

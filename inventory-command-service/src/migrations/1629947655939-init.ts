@@ -25,9 +25,30 @@ export class init1629947655939 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "item" ADD CONSTRAINT "FK_6f963df5ab58ce0925b75a777b4" FOREIGN KEY ("branch_id") REFERENCES "branch"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
+    await queryRunner.query(
+      `CREATE TABLE "user_activity_log" ("id" SERIAL NOT NULL, "activity" character varying NOT NULL, "path" character varying NOT NULL, "userId" integer, "args" json, "result" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_ca8b900eea707229383724af630" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(`CREATE VIEW "product_view" AS 
+    SELECT p.*, it.price, it.quantity, it.branch_id FROM product p 
+    LEFT OUTER JOIN item it ON p.id = it.product_id;`);
+    await queryRunner.query(
+      `INSERT INTO "typeorm_metadata"("type", "schema", "name", "value") VALUES ($1, $2, $3, $4)`,
+      [
+        'VIEW',
+        'public',
+        'product_view',
+        'SELECT p.*, it.price, it.quantity, it.branch_id FROM product p \n  LEFT OUTER JOIN item it ON p.id = it.product_id;',
+      ],
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `DELETE FROM "typeorm_metadata" WHERE "type" = $1 AND "schema" = $2 AND "name" = $3`,
+      ['VIEW', 'public', 'product_view'],
+    );
+    await queryRunner.query(`DROP VIEW "product_view"`);
+    await queryRunner.query(`DROP TABLE "user_activity_log"`);
     await queryRunner.query(
       `ALTER TABLE "item" DROP CONSTRAINT "FK_6f963df5ab58ce0925b75a777b4"`,
     );

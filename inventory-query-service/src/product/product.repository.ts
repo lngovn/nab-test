@@ -1,9 +1,9 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { ProductListDto } from './dto/product.list-dto';
-import { Product } from './product.entity';
+import { ProductView } from './product.entity';
 
-@EntityRepository(Product)
-export class ProductRepository extends Repository<Product> {
+@EntityRepository(ProductView)
+export class ProductRepository extends Repository<ProductView> {
   async getProducts({
     color,
     name,
