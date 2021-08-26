@@ -6,13 +6,12 @@ import { Repository } from 'typeorm';
 import { CreateItemDto } from './dto/create-item.dto';
 import { OrderItemDto } from './dto/order-item.dto';
 import { Branch } from './entities/branch.entity';
-import { Item } from './entities/item.entity';
+import { ItemRepository } from './item.repository';
 
 @Injectable()
 export class ItemService {
   constructor(
-    @InjectRepository(Item)
-    private itemRepository: Repository<Item>,
+    private itemRepository: ItemRepository,
     @InjectRepository(Branch)
     private branchRepository: Repository<Branch>,
     @InjectRepository(Product)
@@ -44,8 +43,13 @@ export class ItemService {
     });
   }
 
-  async prepareOrderItem({ itemId, quantity }: OrderItemDto) {
-    const item = await this.itemRepository.findOne(itemId);
+  async prepareOrderItem({ productId, quantity }: OrderItemDto) {
+    const item = await this.itemRepository.findOneByProduct(productId);
+    if (!item) {
+      throw new RpcException(
+        `Product id [${productId}] has not been added to inventory.`,
+      );
+    }
     if (item.quantity < quantity) {
       throw new RpcException(`Out of product [${item.product.name}]`);
     }
@@ -53,8 +57,13 @@ export class ItemService {
     return this.itemRepository.save(item);
   }
 
-  async refundOrderItem({ itemId, quantity }: OrderItemDto) {
-    const item = await this.itemRepository.findOne(itemId);
+  async refundOrderItem({ productId, quantity }: OrderItemDto) {
+    const item = await this.itemRepository.findOneByProduct(productId);
+    if (!item) {
+      throw new RpcException(
+        `Product id [${productId}] has not been added to inventory.`,
+      );
+    }
     item.quantity = item.quantity + quantity;
     return this.itemRepository.save(item);
   }

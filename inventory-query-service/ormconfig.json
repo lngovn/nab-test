@@ -1,11 +1,11 @@
 {
   "type": "postgres",
-  "host": "localhost",
+  "host": "db",
   "port": 5432,
-  "username": "user2",
+  "username": "user1",
   "password": "password",
-  "database": "example1",
+  "database": "inventory",
   "entities": ["dist/**/*.entity{.ts,.js}"],
-  "synchronize": true,
+  "synchronize": false,
   "logging": false
 }

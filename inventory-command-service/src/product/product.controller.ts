@@ -12,7 +12,7 @@ export class ProductController {
 
   // @Post()
   @MessagePattern('inventory.product.create')
-  create(@Payload('value') createProductDto: CreateProductDto) {
+  create(@Payload() createProductDto: CreateProductDto) {
     return this.productService.createProduct(createProductDto);
   }
 }

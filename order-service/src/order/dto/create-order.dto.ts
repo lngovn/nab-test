@@ -1,11 +1,5 @@
 import { IsNumber, ValidateNested } from 'class-validator';
-
-export class OrderItemDto {
-  @IsNumber()
-  productId: number;
-  @IsNumber()
-  quantity: number;
-}
+import { OrderItemDto } from './order-item.dto';
 
 export class CreateOrderDto {
   @IsNumber()

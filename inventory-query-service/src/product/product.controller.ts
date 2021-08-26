@@ -1,26 +1,18 @@
-import {
-  Controller,
-  UseInterceptors,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { ProductListDto } from './dto/product.list-dto';
 import { ProductService } from './product.service';
-@Controller({
-  version: '1',
-  path: 'products',
-})
+@Controller()
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @EventPattern('get.products')
-  async getProducts(@Payload('value') productListDto: ProductListDto) {
+  @EventPattern('inventory.product.get.products')
+  async getProducts(@Payload() productListDto: ProductListDto) {
     return this.productService.getProducts(productListDto);
   }
 
-  @EventPattern('get.products.id')
-  async getProduct(@Payload('value') { id }: { id: number }) {
+  @EventPattern('inventory.product.get.product')
+  async getProduct(@Payload() { id }: { id: number }) {
     return this.productService.getProduct(id);
   }
 }
