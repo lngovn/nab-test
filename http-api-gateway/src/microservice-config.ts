@@ -1,15 +1,8 @@
 import { ClientOptions, Transport } from '@nestjs/microservices';
 
 export const microserviceConfig: ClientOptions = {
-  transport: Transport.KAFKA,
+  transport: Transport.REDIS,
   options: {
-    client: {
-      clientId: '1',
-      brokers: ['localhost:9092'],
-    },
-    consumer: {
-      groupId: '1',
-      allowAutoTopicCreation: true,
-    },
+    url: 'redis://redis:6379',
   },
 };

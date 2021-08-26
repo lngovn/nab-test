@@ -1,11 +1,10 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { CreateProductDto } from 'nab-test-common';
 import { ProductListDto } from './dto/product.list-dto';
-import { map } from 'rxjs';
+import { CreateProductDto } from 'nab-test-common';
 
 @Controller({
-  path: 'products',
+  path: 'inventory/products',
   version: '1',
 })
 export class ProductController {
