@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { CreateProductDto, IncomingMessage } from 'nab-test-common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { CreateProductDto } from './dto/create-product.dto';
 
 @Controller({
   version: '1',
@@ -11,7 +11,7 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   // @Post()
-  @MessagePattern('create.product')
+  @MessagePattern('inventory.product.create')
   create(@Payload('value') createProductDto: CreateProductDto) {
     return this.productService.createProduct(createProductDto);
   }

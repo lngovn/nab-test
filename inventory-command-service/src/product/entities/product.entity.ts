@@ -1,5 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { Branch } from './branch.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Product {
@@ -15,9 +20,9 @@ export class Product {
   @Column()
   code: string;
 
-  @Column({ type: 'float' })
-  price: number;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @ManyToOne((type) => Branch, (branch) => branch.id)
-  branch: Branch;
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
