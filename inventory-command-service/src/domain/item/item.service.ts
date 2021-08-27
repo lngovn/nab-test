@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Product } from 'src/product/entities/product.entity';
 import { Repository } from 'typeorm';
+import { Product } from '../product/entities/product.entity';
 import { CreateItemDto } from './dto/create-item.dto';
 import { OrderItemDto } from './dto/order-item.dto';
 import { Branch } from './entities/branch.entity';

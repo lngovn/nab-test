@@ -1,7 +1,7 @@
 import { ProductController } from '../product.controller';
 import { ProductService } from '../product.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateProductDto } from 'nab-test-common';
+import { CreateProductDto } from '../dto/create-product.dto';
 
 class ProductServiceMock {
   async createProduct(createProductDto: CreateProductDto) {
@@ -33,8 +33,7 @@ describe('ProductController', () => {
         name: 'Macbook Pro',
         color: 'Silver',
         code: 'MBP',
-        price: 3000,
-        branchId: 1,
+        summary: 'mock-summary',
       };
       const result = await productController.create(createProductDto);
       expect(result).toStrictEqual({

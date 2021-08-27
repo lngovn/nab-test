@@ -80,10 +80,13 @@
       "!**/main.ts",
       "!**/*.module.ts",
       "!**/*.entity.ts",
-      "!**/const.ts"
+      "!**/*.dto.ts",
+      "!**/const.ts",
+      "!**/*.repository.ts"
     ],
     "modulePathIgnorePatterns": [
-      "<rootDir>/migrations"
+      "<rootDir>/migrations",
+      "<rootDir>/config"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
