@@ -1,4 +1,7 @@
 /**/*/dist/
 /**/*/node_modules
+/**/*/coverage
+
 node_modules
 dist
+coverage

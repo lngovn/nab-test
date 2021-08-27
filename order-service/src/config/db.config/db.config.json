@@ -5,7 +5,11 @@
   "username": "user1",
   "password": "password",
   "database": "inventory",
-  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "entities": ["dist/**/*.entity.js"],
   "synchronize": false,
-  "logging": false
+  "logging": false,
+  "migrations": ["dist/migrations/*.js"],
+  "cli": {
+    "migrationsDir": "src/migrations"
+  }
 }

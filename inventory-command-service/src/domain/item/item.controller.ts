@@ -17,6 +17,7 @@ export class ItemController {
   // @Put()
   @MessagePattern('inventory.item.prepare.order')
   prepareOrder(@Payload() orderItemDto: OrderItemDto) {
+    console.log('receive message: ', orderItemDto);
     return this.itemService.prepareOrderItem(orderItemDto);
   }
 

@@ -1,55 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { Client, ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
-import { firstValueFrom } from 'rxjs';
-import { microserviceConfig } from '../../config/microservice.config';
 import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderItemDto } from './dto/order-item.dto';
-import { Order } from './entities/order.entity';
 import { OrderedItem } from './entities/ordered-item.entity';
+import { EventBus, ofType } from '@nestjs/cqrs';
+import { every, filter, firstValueFrom, groupBy, map } from 'rxjs';
+import { CreateOrderTransactionEvent } from './events/create-order-transaction.event';
+import { CreateOrderSuccessEvent } from './events/create-order-success.event';
+import { v4 as uuidv4 } from 'uuid';
+import { CreateOrderFailedEvent } from './events/create-order-failed.event';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class OrderService {
-  @Client(microserviceConfig)
-  private client: ClientProxy;
-
   constructor(
     @InjectRepository(OrderedItem)
     private orderedItemRepository: Repository<OrderedItem>,
-    @InjectRepository(Order)
-    private orderRepository: Repository<Order>,
+    private eventBus: EventBus,
   ) {}
-
-  async prepareItem(orderItemDto: OrderItemDto) {
-    return firstValueFrom(
-      this.client.send('inventory.item.prepare.order', orderItemDto),
-    );
-  }
-
-  async prepareOrderItems(orderItemsDto: OrderItemDto[]) {
-    const compensationItems: OrderItemDto[] = [];
-
-    try {
-      for (const item of orderItemsDto) {
-        await this.prepareItem(item);
-        compensationItems.unshift(item);
-      }
-    } catch (e) {
-      await this.refundOrderItems(compensationItems);
-      throw e;
-    }
-  }
-
-  async refundItem(orderItemDto: OrderItemDto) {
-    return firstValueFrom(
-      this.client.send('inventory.item.refund.order', orderItemDto),
-    );
-  }
-
-  async refundOrderItems(orderItemsDto: OrderItemDto[]) {
-    return Promise.all(orderItemsDto.map((item) => this.refundItem(item)));
-  }
 
   async createOrderedItems(orderItems: OrderItemDto[]) {
     return Promise.all(
@@ -62,19 +31,36 @@ export class OrderService {
     );
   }
 
-  async createOrder({
-    orderItems: items,
-    customerName,
-    customerPhone,
-  }: CreateOrderDto) {
-    await this.prepareOrderItems(items);
-    const orderedItems = await this.createOrderedItems(items);
+  getValueFromCreateOrderSuccessEvent(collerationId: string) {
+    return firstValueFrom(
+      this.eventBus.pipe(
+        ofType(CreateOrderSuccessEvent),
+        filter(({ colId }) => colId === collerationId),
+        map(({ order }) => order),
+      ),
+    );
+  }
 
-    const order = new Order();
-    order.customerName = customerName;
-    order.orderedItems = orderedItems;
-    order.customerPhone = customerPhone;
+  getValueFromCreateOrderFailedEvent(collerationId: string) {
+    return firstValueFrom(
+      this.eventBus.pipe(
+        ofType(CreateOrderFailedEvent),
+        filter(({ colId }) => colId === collerationId),
+        map(({ error }) => {
+          throw new RpcException(error);
+        }),
+      ),
+    );
+  }
 
-    return this.orderRepository.save(order);
+  async createOrder(createOrderDto: CreateOrderDto) {
+    const collerationId = uuidv4();
+    this.eventBus.publish(
+      new CreateOrderTransactionEvent(createOrderDto, collerationId),
+    );
+    return Promise.race([
+      this.getValueFromCreateOrderFailedEvent(collerationId),
+      this.getValueFromCreateOrderSuccessEvent(collerationId),
+    ]);
   }
 }

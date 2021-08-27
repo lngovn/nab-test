@@ -56,8 +56,15 @@ the product and get the product id. After that use the created product id to cre
 * Folder structure: 
 - Layered Architecture: The files inside folder has been classified to difference layers such as: controller, service, repository, etc ...
 - Using DDD to arrange the folder and files. We have the core domain and all subdomain related to core domain. Everything related to core domain will be put into the same folder. Inside each domain folder, we have module file, controller file, service files, dto folder, repository file or repositories folder and entities folder. Besides all the constants and utilities which only use for this domain should be inside the same folder.
+- config folder contains all the configuration such as microservice, database, etc ...
+- migrations folder contains all the migration file for database migrations.
 
 ![image](folder-structure.png)
+
+- For the service using saga pattern, the folder structure has some more folder such as commands, events, saga.
+
+![image](folder-structure1.png)
+
 
 ## Design Pattern and software development principles
 
