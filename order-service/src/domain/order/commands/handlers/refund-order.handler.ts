@@ -12,8 +12,6 @@ export class RefundOrderCommandHandler
 
   async execute(command: RefundOrderCommand) {
     const { orderItem } = command;
-    console.log('Refund for: ', orderItem);
-
     return this.client.send('inventory.item.refund.order', orderItem);
   }
 }

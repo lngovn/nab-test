@@ -56,7 +56,6 @@ export class PrepareOrderCommandHandler
   }
 
   async execute(command: PrepareOrderCommand) {
-    console.log('[PrepareOrderCommandHandler] receive command: ', command);
     const { createOrderDto, colId } = command;
     const compensations = [];
     try {

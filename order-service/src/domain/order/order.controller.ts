@@ -10,7 +10,6 @@ export class OrderController {
   // @Post()
   @MessagePattern('order.order.create')
   create(@Payload() createOrderDto: CreateOrderDto) {
-    console.log('go here!!!');
     return this.orderService.createOrder(createOrderDto);
   }
 }
