@@ -123,3 +123,5 @@ the product and get the product id. After that use the created product id to cre
 * Move Orchestrator Service to a separate service.
 * Audit log for the database activity.
 * Swagger
+* Parameter input validation from HTTP Request.
+* Proper error response from services.

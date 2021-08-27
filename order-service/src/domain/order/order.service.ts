@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Client, ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { firstValueFrom } from 'rxjs';
-import { microserviceConfig } from 'src/microservice-config';
+import { microserviceConfig } from '../../config/microservice.config';
 import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderItemDto } from './dto/order-item.dto';

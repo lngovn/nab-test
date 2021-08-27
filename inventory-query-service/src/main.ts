@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { microserviceConfig } from './microservice-config';
 import { createConnection, getConnectionOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { microserviceConfig } from './config/microservice.config';
 
 async function bootstrap() {
   getConnectionOptions().then((connectionOptions) => {

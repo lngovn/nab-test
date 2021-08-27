@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Client, ClientProxy } from '@nestjs/microservices';
 import { CreateProductDto } from 'nab-test-common';
-import { microserviceConfig } from 'src/microservice-config';
+import { microserviceConfig } from 'src/config/microservice.config';
 import { ProductListDto } from './dto/product.list-dto';
 
 @Injectable()

@@ -17,12 +17,13 @@ export class UserActivityLogService {
     params,
     query,
     body,
+    args,
     results,
   }: CreateUserActivityLogDto) {
     return this.userActivityLogRepository.save({
       activity,
       path,
-      args: {
+      args: args || {
         params,
         query,
         body,

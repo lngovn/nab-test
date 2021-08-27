@@ -1,8 +1,11 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseInterceptors } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
+import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
 import { ProductListDto } from './dto/product.list-dto';
 import { ProductService } from './product.service';
+
 @Controller()
+@UseInterceptors(LoggingInterceptor)
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 

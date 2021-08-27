@@ -12,5 +12,7 @@ export class CreateUserActivityLogDto {
   @IsNumber()
   readonly body?: unknown;
   @IsObject()
+  readonly args?: unknown;
+  @IsObject()
   readonly results?: unknown;
 }

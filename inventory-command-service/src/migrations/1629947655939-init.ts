@@ -26,7 +26,7 @@ export class init1629947655939 implements MigrationInterface {
       `ALTER TABLE "item" ADD CONSTRAINT "FK_6f963df5ab58ce0925b75a777b4" FOREIGN KEY ("branch_id") REFERENCES "branch"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `CREATE TABLE "user_activity_log" ("id" SERIAL NOT NULL, "activity" character varying NOT NULL, "path" character varying NOT NULL, "userId" integer, "args" json, "result" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_ca8b900eea707229383724af630" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "user_activity_log" ("id" SERIAL NOT NULL, "activity" character varying NOT NULL, "path" character varying NOT NULL, "user_id" integer, "args" json, "result" character varying, "created_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_ca8b900eea707229383724af630" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(`CREATE VIEW "product_view" AS 
     SELECT p.*, it.price, it.quantity, it.branch_id FROM product p 
