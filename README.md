@@ -122,3 +122,4 @@ the product and get the product id. After that use the created product id to cre
 * Provide the Unit test for all of the service, at the moment, only Inventory command service has unit test.
 * Move Orchestrator Service to a separate service.
 * Audit log for the database activity.
+* Swagger
