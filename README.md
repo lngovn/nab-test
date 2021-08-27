@@ -106,7 +106,7 @@ the product and get the product id. After that use the created product id to cre
   curl --location --request POST 'http://localhost:3000/api/inventory/items' \
   --header 'Content-Type: application/json' \
   --data-raw '{
-    "productId": "3",
+    "productId": "1",
     "branchId": "1",
     "price": 3000,
     "quantity": 1000
@@ -119,6 +119,17 @@ the product and get the product id. After that use the created product id to cre
   - Curl command to get one product:
   ```
   curl --location --request GET 'http://localhost:3000/api/inventory/products/1'
+  ```
+
+  - Order a product
+  ```
+  curl --location --request POST 'http://localhost:3000/api/orders' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "customerName": "Luong Ngo",
+    "customerPhone": 0546876789,
+    "orderItems": [ { "productId": 1, "quantity": 1 }]
+  }'
   ```
 
 ## Unit tests
