@@ -125,6 +125,7 @@ the product and get the product id. After that use the created product id to cre
 
 - Due to time limitation, only the Inventory Command Service has unit tests, its coverage is >80%.
 ## What need to be improve:
+* Environment variables for configs
 * Response structure must be standardize.
 * Provide the Unit test for all of the service, at the moment, only Inventory command service has unit test.
 * Move Orchestrator Service to a separate service.
