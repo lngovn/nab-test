@@ -128,7 +128,7 @@ the product and get the product id. After that use the created product id to cre
 * Environment variables for configs
 * Response structure must be standardize.
 * Provide the Unit test for all of the service, at the moment, only Inventory command service has unit test.
-* Move Orchestrator Service to a separate service.
+* Move Orchestrator Service to a separate microservice.
 * Audit log for the database activity.
 * Swagger
 * Parameter input validation from HTTP Request.
